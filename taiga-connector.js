@@ -511,11 +511,22 @@ var AliensInvasionContract = web3.eth.contract( [
     }
   ]);
 
-  let loadTokens = async function () {
-    var AliensInvasion = AliensInvasionContract.at('0x0bc867004d4f1c88d3ee4c3e85c290871491ef32');
+  let setAssetSelected = function(title, description, image, spriteImage) {
+    $('#asset-title').html(title);
+    $('#asset-description').html(description);
+    $('#asset-image-wrapper').html('<img src="'+image+'" />');
+    loadGame(spriteImage);
+  }
+
+  let loadTokens = async function (selectFirst) {
+    var AliensInvasion = AliensInvasionContract.at('0x3e4ce9428dcce109aaab0a0f070546d496add05b');
     console.log(AliensInvasion);
     //debugger;
     let balance = await AliensInvasion.balanceOf.call(web3.eth.accounts[0]).toNumber();
+    console.log("account:"+web3.eth.accounts[0]);
+    console.log("# assets:"+balance);
+    $("#my-assets").innerHTML = '';
+
     for(i = 0; i < balance; i++) {
       let asset = await AliensInvasion.getAssetTypeFromIndex.call(web3.eth.accounts[0], i);
       let tokenId = asset[0].toNumber();
@@ -524,7 +535,7 @@ var AliensInvasionContract = web3.eth.contract( [
       let imageUrl = asset[3];
       let assetType = asset[4];
       let supply = asset[5].toNumber();
-      let properties = asset[6];
+      let properties = JSON.parse(asset[6]);
       console.log("TokenId: "+tokenId);
       console.log("Title: "+title);
       console.log("Description: "+description);
@@ -533,8 +544,24 @@ var AliensInvasionContract = web3.eth.contract( [
       console.log("TokenId: "+tokenId);
       console.log("Properties: "+properties);
       console.log(asset);
+      //let innerHTML = $("#my-assets").innerHTML();
+      let liHtml = '<li ><div class="other-asset"><div class="other-asset-image"><img src="'+imageUrl+'" /></div><div class="other-asset-title">'+title+'</div><div class="other-asset-description">'+description+'</div></div></li>';
+
+      //data("sprites", properties.spriteImage).html(title);
+      //let ul = $("#other-assets > ul").append(liHtml);
+      if(i == 0 && selectFirst) {
+        setAssetSelected(title, description, imageUrl, properties.spriteImage);
+      }
+
     }
+    //SpriteSheet.setSpritesImage("images/sprites3.png");
   }
 
 
-  loadTokens();
+
+  $( document ).ready(function() {
+      loadTokens(true);
+      console.log( "document loaded" );
+      //loadGame("images/sprites3.png");
+      //loadGame("images/sprites.png");
+  });

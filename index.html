@@ -10,12 +10,54 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-  <div id='container'>
-    <canvas id='game' width='320' height='480'></canvas>
-  </div>
-  <script src="web3.js"></script>
-  <script src="taiga-connector.js"></script>
+  <script src='jquery-1.9.1.min.js'></script>
   <script src='engine.js'></script>
   <script src='game.js'></script>
+  <script src="web3.js"></script>
+  <script src="taiga-connector.js"></script>
+
+
+  <section>
+
+    <h1>Alien Invasion</h1>
+
+    <div id="game-view" class="row">
+      <div class="col-md-6">
+        <canvas id='game' width='320' height='480'></canvas>
+      </div>
+
+      <div class="asset-view">
+        <h3>Now Playing</h3>
+
+        <label>Title</label>
+        <p id="asset-title">MFalcon 2178</p>
+
+        <label>Description</label>
+        <p id="asset-description">Star Wars Falcon for Alien invasion.</p>
+
+        <div class="asset-image-wrapper">
+          <img src="images/assets/asset.png" />
+        </div>
+      </div>
+
+    </div>
+
+    <hr/>
+
+    <div id="other-assets">
+      <ul>
+        <li>
+          <div class="other-asset">
+            <div class="other-asset-image">
+                <img src="/img/other-asset-1.png" />
+            </div>
+            <div class="other-asset-title">MFalcon 21718</div>
+            <div class="other-asset-description">Star Trek Enterprise for Alien Invasion. Boldy go where no alien has gone before.</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+  </section>
 </body>
 </html>
