@@ -191,6 +191,10 @@ var AliensInvasionContract = web3.eth.contract( [
         {
           "name": "supply",
           "type": "uint256"
+        },
+        {
+          "name": "properties",
+          "type": "string"
         }
       ],
       "payable": false,
@@ -368,6 +372,10 @@ var AliensInvasionContract = web3.eth.contract( [
         {
           "name": "_supply",
           "type": "uint256"
+        },
+        {
+          "name": "_properties",
+          "type": "string"
         }
       ],
       "name": "createAssetType",
@@ -405,6 +413,10 @@ var AliensInvasionContract = web3.eth.contract( [
         {
           "name": "supply",
           "type": "uint256"
+        },
+        {
+          "name": "properties",
+          "type": "string"
         }
       ],
       "payable": false,
@@ -440,6 +452,10 @@ var AliensInvasionContract = web3.eth.contract( [
         {
           "name": "supply",
           "type": "uint256"
+        },
+        {
+          "name": "properties",
+          "type": "string"
         }
       ],
       "payable": false,
@@ -461,6 +477,10 @@ var AliensInvasionContract = web3.eth.contract( [
       "name": "getAssetTypeFromIndex",
       "outputs": [
         {
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
           "name": "title",
           "type": "string"
         },
@@ -479,6 +499,10 @@ var AliensInvasionContract = web3.eth.contract( [
         {
           "name": "supply",
           "type": "uint256"
+        },
+        {
+          "name": "properties",
+          "type": "string"
         }
       ],
       "payable": false,
@@ -488,12 +512,26 @@ var AliensInvasionContract = web3.eth.contract( [
   ]);
 
   let loadTokens = async function () {
-    var AliensInvasion = AliensInvasionContract.at('0xa14349286a4abe84d88b4e62532b0c7d6b505437');
+    var AliensInvasion = AliensInvasionContract.at('0x0bc867004d4f1c88d3ee4c3e85c290871491ef32');
     console.log(AliensInvasion);
     //debugger;
     let balance = await AliensInvasion.balanceOf.call(web3.eth.accounts[0]).toNumber();
     for(i = 0; i < balance; i++) {
       let asset = await AliensInvasion.getAssetTypeFromIndex.call(web3.eth.accounts[0], i);
+      let tokenId = asset[0].toNumber();
+      let title = asset[1];
+      let description = asset[2];
+      let imageUrl = asset[3];
+      let assetType = asset[4];
+      let supply = asset[5].toNumber();
+      let properties = asset[6];
+      console.log("TokenId: "+tokenId);
+      console.log("Title: "+title);
+      console.log("Description: "+description);
+      console.log("ImageUrl: "+imageUrl);
+      console.log("Supply: "+supply);
+      console.log("TokenId: "+tokenId);
+      console.log("Properties: "+properties);
       console.log(asset);
     }
   }
