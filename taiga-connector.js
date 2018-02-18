@@ -1,17 +1,17 @@
-let web3 = window.web3;
+//let web3 = window.web3;
 
 if (typeof web3 !== 'undefined') {
   web3 = new Web3(web3.currentProvider);
 } else {
   // set the provider you want from Web3.providers
-  web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+  //web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 }
-console.log(web3.eth.accounts);
+//console.log(web3.eth.accounts);
 
-var balanceWei = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
+/*var balanceWei = web3.eth.getBalance(web3.eth.accounts[0]).toNumber();
 var balance = web3.fromWei(balanceWei, 'ether');
 console.log(balance);
-
+*/
 
 var AliensInvasionContract = web3.eth.contract( [
     {
@@ -544,50 +544,64 @@ var AliensInvasionContract = web3.eth.contract( [
     };
   }
 
-  let loadTokens = async function (selectFirst) {
+  let loadTokens = function (selectFirst) {
     let address = $('#smart-contract-refresh-text').val();
+    if(address == ''){
+      return;
+    }
     assets = {};
     var AliensInvasion = AliensInvasionContract.at(address);
     console.log(AliensInvasion);
-    //debugger;
-    let balance = await AliensInvasion.balanceOf.call(web3.eth.accounts[0]).toNumber();
-    console.log("account:"+web3.eth.accounts[0]);
-    console.log("# assets:"+balance);
-    for(i = 0; i < balance; i++) {
 
-      let asset = await AliensInvasion.getAssetTypeFromIndex.call(web3.eth.accounts[0], i);
-      let tokenId = asset[0].toNumber();
-      let title = asset[1];
-      let description = asset[2];
-      let imageUrl = asset[3];
-      let assetType = asset[4];
-      let supply = asset[5].toNumber();
-      let properties = JSON.parse(asset[6]);
-
-      assets[tokenId] = {
-        tokenId: tokenId,
-        title: title,
-        description: description,
-        imageUrl: imageUrl,
-        assetType: assetType,
-        supply: supply,
-        properties: properties
-      };
-
-      console.log("TokenId: "+tokenId);
-      console.log("Title: "+title);
-      console.log("Description: "+description);
-      console.log("ImageUrl: "+imageUrl);
-      console.log("Supply: "+supply);
-      console.log("TokenId: "+tokenId);
-      console.log("Properties: "+properties);
-      console.log(asset);
-
-      if(i == 0 && selectFirst) {
-        setAssetSelected(tokenId);
+    AliensInvasion.tokensOf.call(web3.eth.accounts[0], function (error, result) {
+      if(error != undefined) {
+        console.log(error);
+        return;
       }
-    }
-    populateOtherAssets();
+      let balance = result.length;
+      console.log("account:"+web3.eth.accounts[0]);
+      console.log("# assets:"+balance);
+      for(i = 0; i < balance; i++) {
+        let tokenId = result[i].toNumber();
+        let thisI = i;
+        AliensInvasion.getAssetTypeFromTokenId.call(tokenId, (error, asset) => {
+          if(error != undefined) {
+            console.log(error);
+            return;
+          }
+          let title = asset[0];
+          let description = asset[1];
+          let imageUrl = asset[2];
+          let assetType = asset[3];
+          let supply = asset[4].toNumber();
+          let properties = JSON.parse(asset[5]);
+          assets[tokenId] = {
+            tokenId: tokenId,
+            title: title,
+            description: description,
+            imageUrl: imageUrl,
+            assetType: assetType,
+            supply: supply,
+            properties: properties
+          };
+          console.log("TokenId: "+tokenId);
+          console.log("Title: "+title);
+          console.log("Description: "+description);
+          console.log("ImageUrl: "+imageUrl);
+          console.log("Supply: "+supply);
+          console.log("TokenId: "+tokenId);
+          console.log("Properties: "+properties);
+          console.log(asset);
+          if(thisI == 0 && selectFirst) {
+            setAssetSelected(tokenId);
+          }
+          if(thisI == (balance - 1)) {
+            populateOtherAssets();
+          }
+        });
+      }
+
+    })
   }
 
 
@@ -596,7 +610,7 @@ var AliensInvasionContract = web3.eth.contract( [
     $('#smart-contract-refresh-btn').click(function() {
       loadTokens(true);
     })
-      $('#smart-contract-refresh-text').val('0x67f1f74bc9ba0a854e9126b0212c3a8c4e54e589');
+      $('#smart-contract-refresh-text').val('');
       loadTokens(true);
       console.log( "document loaded" );
       //loadGame("images/sprites3.png");
