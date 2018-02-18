@@ -511,23 +511,48 @@ var AliensInvasionContract = web3.eth.contract( [
     }
   ]);
 
-  let setAssetSelected = function(title, description, image, spriteImage) {
-    $('#asset-title').html(title);
-    $('#asset-description').html(description);
-    $('#asset-image-wrapper').html('<img src="'+image+'" />');
-    loadGame(spriteImage);
+  var assets = {};
+  var selectedAsset = -1;
+
+  let setAssetSelected = function(tokenId) {
+    selectedAsset = tokenId;
+    let asset = assets[selectedAsset];
+    $('#asset-title').html(asset.title);
+    $('#asset-description').html(asset.description);
+    $('#asset-image-wrapper-img').attr("src",asset.imageUrl);
+    loadGame(asset.properties.spriteImage);
+    populateOtherAssets();
+  }
+
+  let populateOtherAssets = function() {
+    //debugger;
+    $("#other-assets >> ul").html('');
+    for (var tokenId in assets) {
+      let asset = assets[tokenId];
+      if(asset.tokenId != selectedAsset) {
+        let li = $('<li ><div class="other-asset col-md-4 col-sm-6"><div class="other-asset-wrapper"><div class="other-asset-image"><img src="'+asset.imageUrl+'" /></div><div class="other-asset-details"><div class="asset-details-height"><div class="other-asset-title">'+asset.title+'</div><div class="other-asset-description">'+asset.description+'</div></div><button type="button" id="play-'+asset.tokenId+'" class="btn btn-primary btn-lg btn-block">Play</button></div></div></li>');
+        //<img src="'+asset.imageUrl+'" id="other-asset-image-'+asset.tokenId+'"/>
+        $("#other-assets >> ul").append(li);
+        $('#play-'+asset.tokenId).click(function() {
+          setAssetSelected(asset.tokenId);
+        })
+
+
+      }
+    };
   }
 
   let loadTokens = async function (selectFirst) {
-    var AliensInvasion = AliensInvasionContract.at('0x3e4ce9428dcce109aaab0a0f070546d496add05b');
+    let address = $('#smart-contract-refresh-text').val();
+    assets = {};
+    var AliensInvasion = AliensInvasionContract.at(address);
     console.log(AliensInvasion);
     //debugger;
     let balance = await AliensInvasion.balanceOf.call(web3.eth.accounts[0]).toNumber();
     console.log("account:"+web3.eth.accounts[0]);
     console.log("# assets:"+balance);
-    $("#my-assets").innerHTML = '';
-
     for(i = 0; i < balance; i++) {
+
       let asset = await AliensInvasion.getAssetTypeFromIndex.call(web3.eth.accounts[0], i);
       let tokenId = asset[0].toNumber();
       let title = asset[1];
@@ -536,6 +561,17 @@ var AliensInvasionContract = web3.eth.contract( [
       let assetType = asset[4];
       let supply = asset[5].toNumber();
       let properties = JSON.parse(asset[6]);
+
+      assets[tokenId] = {
+        tokenId: tokenId,
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        assetType: assetType,
+        supply: supply,
+        properties: properties
+      };
+
       console.log("TokenId: "+tokenId);
       console.log("Title: "+title);
       console.log("Description: "+description);
@@ -544,22 +580,21 @@ var AliensInvasionContract = web3.eth.contract( [
       console.log("TokenId: "+tokenId);
       console.log("Properties: "+properties);
       console.log(asset);
-      //let innerHTML = $("#my-assets").innerHTML();
-      let liHtml = '<li ><div class="other-asset"><div class="other-asset-image"><img src="'+imageUrl+'" /></div><div class="other-asset-title">'+title+'</div><div class="other-asset-description">'+description+'</div></div></li>';
 
-      //data("sprites", properties.spriteImage).html(title);
-      //let ul = $("#other-assets > ul").append(liHtml);
       if(i == 0 && selectFirst) {
-        setAssetSelected(title, description, imageUrl, properties.spriteImage);
+        setAssetSelected(tokenId);
       }
-
     }
-    //SpriteSheet.setSpritesImage("images/sprites3.png");
+    populateOtherAssets();
   }
 
 
 
   $( document ).ready(function() {
+    $('#smart-contract-refresh-btn').click(function() {
+      loadTokens(true);
+    })
+      $('#smart-contract-refresh-text').val('0x67f1f74bc9ba0a854e9126b0212c3a8c4e54e589');
       loadTokens(true);
       console.log( "document loaded" );
       //loadGame("images/sprites3.png");

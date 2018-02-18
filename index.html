@@ -37,10 +37,10 @@
   <section class="container">
 
     <h1 class="col-md-8">Alien Invasion</h1>
-    
+
     <div id="asset-search" class="col-md-4">
-      <input type="text">
-      <button type="button" class="btn btn-default">Refresh</button>
+      <input id="smart-contract-refresh-text" type="text">
+      <button id="smart-contract-refresh-btn" type="button" class="btn btn-default" placeholder="Smart Contract Address">Reload</button>
     </div>
 
     <div class="row">
@@ -58,7 +58,7 @@
         <p id="asset-description">Star Wars Falcon for Alien invasion.</p>
 
         <div class="asset-image-wrapper">
-          <img src="images/assets/enterprise.png" />
+          <img id="asset-image-wrapper-img" src="images/assets/enterprise.png" />
         </div>
       </div>
     </div>
@@ -66,40 +66,12 @@
 
 <hr/>
 
-<section class="other-assets container">
+<section id="other-assets" class="other-assets container">
   <div class="row">
     <p><b>Other Assets</b></p>
-    <div class="other-asset col-md-4 col-sm-6">
-      <div class="other-asset-wrapper">
-        <div class="other-asset-image">
-            <img src="images/assets/tfighter.png" />
-        </div>
-        <div class="other-asset-details">
-          <div class="asset-details-height">
-            <div class="other-asset-title">TFighter 21718</div>
-            <div class="other-asset-description">Star Wars TFighter for Alien Invasion.</div>
-          </div>
-          <button type="button" class="btn btn-primary btn-lg btn-block">Play</button>
-        </div>
-      </div>
-    </div>
+    <ul>
 
-    <div class="other-asset col-md-4 col-sm-6">
-      <div class="other-asset-wrapper">
-        <div class="other-asset-image">
-          <img src="images/assets/mfalcon.png" />
-        </div>
-        <div class="other-asset-details">
-          <div class="asset-details-height">
-            <div class="other-asset-title">Enterprise</div>
-            <div class="other-asset-description">Star Trek Enterprise for Alien Invasion. Boldy go where no alien has gone before.</div>
-          </div>
-          <button type="button" class="btn btn-primary btn-lg btn-block">Play</button>
-        </div>
-      </div>
-    </div>
-
-
+    </ul>
 
   </div>
 
