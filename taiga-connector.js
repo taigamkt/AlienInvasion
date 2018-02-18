@@ -550,6 +550,7 @@ var AliensInvasionContract = web3.eth.contract( [
       return;
     }
     assets = {};
+
     var AliensInvasion = AliensInvasionContract.at(address);
     console.log(AliensInvasion);
 
@@ -569,6 +570,7 @@ var AliensInvasionContract = web3.eth.contract( [
             console.log(error);
             return;
           }
+          console.log(asset);
           let title = asset[0];
           let description = asset[1];
           let imageUrl = asset[2];
@@ -608,6 +610,10 @@ var AliensInvasionContract = web3.eth.contract( [
 
   $( document ).ready(function() {
     $('#smart-contract-refresh-btn').click(function() {
+      $('#asset-title').html("No Assets Available");
+      $('#asset-description').html('');
+      $('#asset-image-wrapper-img').attr("src",'');
+      $("#other-assets >> ul").html('');
       loadTokens(true);
     })
       $('#smart-contract-refresh-text').val('');
