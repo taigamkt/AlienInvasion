@@ -15,18 +15,40 @@
   <script src='game.js'></script>
   <script src="web3.js"></script>
   <script src="taiga-connector.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat+Alternates:300,400,400i,500,500i,600,700,800|Volkhov:400,700" rel="stylesheet">
+  <link rel="stylesheet" href="custom.css" type="text/css" />
 
+  <header>
+    <div id="header-wrapper" class="container">
+      <div id="taiga-logo"><img src="images/assets/taiga-logo.png" /></div>
+      <nav class="row">
+        <ul class="col-md-12">
+          <li>Marketplace</li>
+          <li>MyAssets</li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
-  <section>
+  <section class="container">
 
-    <h1>Alien Invasion</h1>
+    <h1 class="col-md-8">Alien Invasion</h1>
+    
+    <div id="asset-search" class="col-md-4">
+      <input type="text">
+      <button type="button" class="btn btn-default">Refresh</button>
+    </div>
 
-    <div id="game-view" class="row">
-      <div class="col-md-6">
+    <div class="row">
+      <div class="asset-game-view col-sm-6">
         <canvas id='game' width='320' height='480'></canvas>
       </div>
 
-      <div class="asset-view">
+      <div class="asset-detail-view col-sm-6">
         <h3>Now Playing</h3>
 
         <label>Title</label>
@@ -36,20 +58,52 @@
         <p id="asset-description">Star Wars Falcon for Alien invasion.</p>
 
         <div class="asset-image-wrapper">
-          <img src="images/assets/asset.png" />
+          <img src="images/assets/enterprise.png" />
         </div>
       </div>
+    </div>
+</section>
 
+<hr/>
+
+<section class="other-assets container">
+  <div class="row">
+    <p><b>Other Assets</b></p>
+    <div class="other-asset col-md-4 col-sm-6">
+      <div class="other-asset-wrapper">
+        <div class="other-asset-image">
+            <img src="images/assets/tfighter.png" />
+        </div>
+        <div class="other-asset-details">
+          <div class="asset-details-height">
+            <div class="other-asset-title">TFighter 21718</div>
+            <div class="other-asset-description">Star Wars TFighter for Alien Invasion.</div>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg btn-block">Play</button>
+        </div>
+      </div>
     </div>
 
-    <hr/>
-
-    <div id="other-assets">
-      <ul>
-
-      </ul>
+    <div class="other-asset col-md-4 col-sm-6">
+      <div class="other-asset-wrapper">
+        <div class="other-asset-image">
+          <img src="images/assets/mfalcon.png" />
+        </div>
+        <div class="other-asset-details">
+          <div class="asset-details-height">
+            <div class="other-asset-title">Enterprise</div>
+            <div class="other-asset-description">Star Trek Enterprise for Alien Invasion. Boldy go where no alien has gone before.</div>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg btn-block">Play</button>
+        </div>
+      </div>
     </div>
 
-  </section>
+
+
+  </div>
+
+</section>
+
 </body>
 </html>
