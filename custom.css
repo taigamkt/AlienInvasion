@@ -43,7 +43,12 @@ header {
         border-bottom: 3px solid #593492;
       }
 
-
+      #asset-search {
+        padding-top: 1em;
+      }
+      #asset-search input {
+        height: 34px;
+      }
 
     /* Asset View */
     h3 {
